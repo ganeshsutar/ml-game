@@ -2,12 +2,14 @@ import pygame
 
 WIDTH=10
 HEIGHT=10
+PATH='./assets/egg.png'
 
 class PositiveParticle(pygame.sprite.Sprite):
     def __init__(self, position, velocity):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface([WIDTH, HEIGHT],pygame.SRCALPHA,32).convert_alpha()
-        pygame.draw.rect(self.image,(0, 255, 0),(0, 0, WIDTH, HEIGHT))
+        self.image = pygame.image.load(PATH).convert_alpha()
+        rect = self.image.get_rect()
+        self.image = pygame.transform.scale(self.image, (rect.width/2, rect.height/2))
         self.rect = self.image.get_rect()
         self.rect.center = position
         self.velocity = velocity

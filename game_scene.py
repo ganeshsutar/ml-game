@@ -33,11 +33,10 @@ class GameScene:
     def add_particle(self):
         # randomly add a particle
         width, height = pygame.display.get_surface().get_size()
-        vy = random.randint(1, 5)
+        vy = random.randint(3, 8)
         pos = (random.randint(0,width-100), -50)
         positivity = random.randint(0, 1)
         if positivity == 0:
             self.positiveParticles.add( PositiveParticle(pos, (0, vy)) )
         else:
             self.negativeParticles.add( NegativeParticle(pos, (0, vy)) )
-        print('Particle Added')

@@ -8,7 +8,7 @@ from game_scene import GameScene
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((400,300))
+    screen = pygame.display.set_mode((800,600))
     pygame.display.set_caption('EGG CATCHER')
     pygame.font.init()
     pygame.mixer.init()
