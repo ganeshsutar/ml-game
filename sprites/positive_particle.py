@@ -13,6 +13,7 @@ class PositiveParticle(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = position
         self.velocity = velocity
+        
 
     def update(self):
         point = self.rect.center

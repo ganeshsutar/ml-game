@@ -1,14 +1,44 @@
 import pygame
+from vector import Vec2d as vec
+
+BASKET_ACC = 3
+BASKET_FRICTION = 0.12
+WIDTH=30
+HEIGHT= 10
+PATH = './assets/basket.png'
 
 class Slider(pygame.sprite.Sprite):
-    def __init__(self, position):
+    def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface([30, 30],pygame.SRCALPHA,32).convert_alpha()
-        pygame.draw.rect(self.image,(0, 0, 255),(0, 0, 30, 30))
+        self.image = pygame.image.load(PATH).convert_alpha()
+        #rect = self.image.get_rect()
+        #self.image = pygame.tra
+        #pygame.draw.rect(self.image,(0, 0, 255),(0, 0, WIDTH,HEIGHT))
         self.rect = self.image.get_rect()
-        self.rect.center = position
+        self.vel = vec(0,0)
+        self.acc = vec(0,0)
+        width,height = pygame.display.get_surface().get_size()
+        self.rect.center = (width/2,height-HEIGHT-10);
+        self.pos = vec(width/2,height-HEIGHT-10)
         # self.velocity = velocity
 
     def update(self):
-        point = self.rect.center
-        self.rect.center = (point[0],point[1]+1)
+        self.acc = vec(0,0)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+           self.acc.x = -BASKET_ACC
+        if keys[pygame.K_RIGHT]:
+           self.acc.x = BASKET_ACC
+
+        self.acc += self.vel * (-BASKET_FRICTION)
+        self.vel += self.acc
+        self.pos += (self.vel + 0.5 * self.acc)
+        # print(self.acc, self.vel, self.pos)
+
+        screenSize = pygame.display.get_surface().get_size()
+        if self.pos.x < 0: self.pos.x = 0
+        if self.pos.x > screenSize[0]: self.pos.x = screenSize[0]
+        if self.pos.y < 0: self.pos.y = 0
+        if self.pos.y > screenSize[1]: self.pos.y = screenSize[1]
+
+        self.rect.center = self.pos

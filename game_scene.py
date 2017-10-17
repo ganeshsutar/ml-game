@@ -6,7 +6,7 @@ PARTICLE_RATE = 500
 
 class GameScene:
     def __init__(self):
-        self.slider = Slider((100, 100))
+        self.slider = Slider()
         self.sliderSprites  = pygame.sprite.RenderPlain()
         self.sliderSprites.add(self.slider)
 
