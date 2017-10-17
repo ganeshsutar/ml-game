@@ -43,4 +43,4 @@ class Slider(pygame.sprite.Sprite):
         self.rect.center = self.pos
 
     def get_inputs(self):
-        return (self.rect.center[0])
+        return (self.rect.center[0], self.velocity[0])
