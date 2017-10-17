@@ -1,6 +1,7 @@
 import pygame
-from sprites import Slider, PositiveParticle, NegativeParticle
 import random
+from sprites import Slider, PositiveParticle, NegativeParticle
+from layers import ScoreLayer
 
 PARTICLE_RATE = 500
 
@@ -14,6 +15,10 @@ class GameScene:
         self.negativeParticles = pygame.sprite.RenderPlain()
         self.lastParticleAdded = pygame.time.get_ticks()
 
+        self.layers = pygame.sprite.RenderPlain()
+        self.score_layer = ScoreLayer()
+        self.layers.add(self.score_layer)
+
     def update(self, timeDelta):
         self.sliderSprites.update()
         self.positiveParticles.update()
@@ -22,13 +27,14 @@ class GameScene:
     def draw(self, timeDelta):
         screen = pygame.display.get_surface()
         screen.fill((255,255,255))
-        self.sliderSprites.draw(screen)
-        self.positiveParticles.draw(screen)
-        self.negativeParticles.draw(screen)
         current_time = pygame.time.get_ticks()
         if (current_time - self.lastParticleAdded) > PARTICLE_RATE:
             self.add_particle()
             self.lastParticleAdded = current_time
+        self.sliderSprites.draw(screen)
+        self.positiveParticles.draw(screen)
+        self.negativeParticles.draw(screen)
+        self.layers.draw(screen)
 
     def add_particle(self):
         # randomly add a particle
