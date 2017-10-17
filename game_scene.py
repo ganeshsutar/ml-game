@@ -20,7 +20,7 @@ def make_comparator(slider_x):
 
 class GameScene:
     def __init__(self, (game_width, game_height)):
-        print(game_width, game_height)
+        # print(game_width, game_height)
         self.surface = pygame.Surface((game_width, game_height), pygame.SRCALPHA, 32).convert_alpha()
         self.slider = Slider(self.surface)
         self.sliderSprites  = pygame.sprite.RenderPlain()
@@ -36,6 +36,8 @@ class GameScene:
         self.score_layer = ScoreLayer(self.surface)
         self.layers.add(self.score_layer)
 
+    def get_score(self):
+        return self.score_layer.score
 
     def update(self, timeDelta):
         if self.game_over == True:
@@ -74,9 +76,9 @@ class GameScene:
         else:
             self.negativeParticles.add( NegativeParticle(self.surface, pos, (0, vy)) )
 
-
-
     def get_inputs(self,n):
+        """Parameter n is for top n +ve and -ve particles to select for NN"""
+
         slider_x,slider_xvelocity = self.slider.get_inputs()
         neg_particles  = [(a,b,c,d,1) for a,b,c,d in [x.get_inputs() for x in self.negativeParticles]]
         pos_particles  = [(a,b,c,d,1) for a,b,c,d in [x.get_inputs() for x in self.positiveParticles]]
