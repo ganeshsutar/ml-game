@@ -37,9 +37,8 @@ class GeneticAlgo:
 
 
     def crossover(self):
-        L = [ (scene.get_score(),i)  for i,scene in enumerate(self.main_scene.scenes)]
-        sorted(L)
         # get indexes
+        L  = self.sorted_idx
         i,j = L[-1][1],L[-2][1]
         C1,C2 = self.do_crossover(self.nns[i].coefs_,self.nns[j].coefs_)
         ri,rj = L[0][1], L[1][1]
@@ -47,12 +46,30 @@ class GeneticAlgo:
         self.nns[ri].coefs_ = C1
         self.nns[rj].coefs_ = C2
 
-
-
+    def sortedGeneration(self):
+        L= [ (scene.get_score(),i)  for i,scene in enumerate(self.main_scene.scenes)]
+        self.sorted_idx = sorted(L)
 
     def predict(self, i, x):
         return self.nns[i].predict([x])[0]
 
     def add_generation(self):
+        # retain 25% of the best fit Genomes
+        new_genration = []
+        L = self.sortedGeneration()
+        # genomes to retain
+        retain_counts = 5;
+        new_genration = [ self.nns[x]  for x  in L[-5:][1]]
+
+        ran = random.sample(xrange(0,15),3)
+        ran_genration = [self.nns[x] for x in  ran ]
+        new_genration.extend(ran)
+
+        # perform mutation
+        for x in range(6):
+            C1,
+
+        # slect
+
         self.crossover()
         self.mutate()
