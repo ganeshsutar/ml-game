@@ -15,3 +15,7 @@ class ScoreLayer(pygame.sprite.Sprite):
         self.image = self.font.render('SCORE: {}'.format(self.score), True, (30,30,30))
         self.rect = self.image.get_rect()
         self.rect.topleft = (width-self.rect.width-20, 20)
+
+    def set_score(self, score):
+        self.score = score
+        self.update_score()
