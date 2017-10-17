@@ -8,15 +8,16 @@ HEIGHT= 10
 PATH = './assets/basket.png'
 
 class Slider(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, surface):
         pygame.sprite.Sprite.__init__(self)
+        self.surface = surface
         self.image = pygame.image.load(PATH).convert_alpha()
         rect = self.image.get_rect()
         pygame.draw.rect(self.image,(0, 0, 255),(0, 0, rect.width-1,rect.height -1),1)
         self.rect = self.image.get_rect()
         self.vel = vec(0,0)
         self.acc = vec(0,0)
-        width,height = pygame.display.get_surface().get_size()
+        width,height = self.surface.get_size()
         self.rect.center = (width/2,height-HEIGHT-10);
         self.pos = vec(width/2,height-HEIGHT-10)
         # self.velocity = velocity
@@ -34,7 +35,7 @@ class Slider(pygame.sprite.Sprite):
         self.pos += (self.vel + 0.5 * self.acc)
         # print(self.acc, self.vel, self.pos)
 
-        screenSize = pygame.display.get_surface().get_size()
+        screenSize = self.surface.get_size()
         if self.pos.x < 0: self.pos.x = 0
         if self.pos.x > screenSize[0]: self.pos.x = screenSize[0]
         if self.pos.y < 0: self.pos.y = 0

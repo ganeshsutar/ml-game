@@ -7,18 +7,18 @@ from layers import ScoreLayer
 PARTICLE_RATE = 500
 
 class GameScene:
-    def __init__(self):
-        self.slider = Slider()
+    def __init__(self, surface):
+        self.surface = surface
+        self.slider = Slider(self.surface)
         self.sliderSprites  = pygame.sprite.RenderPlain()
         self.sliderSprites.add(self.slider)
         self.game_over = False
         self.game_last_drawn = False
         self.positiveParticles = pygame.sprite.RenderPlain()
         self.negativeParticles = pygame.sprite.RenderPlain()
-        self.lastParticleAdded = pygame.time.get_ticks()
 
         self.layers = pygame.sprite.RenderPlain()
-        self.score_layer = ScoreLayer()
+        self.score_layer = ScoreLayer(self.surface)
         self.layers.add(self.score_layer)
 
 
@@ -38,26 +38,16 @@ class GameScene:
     def draw(self, timeDelta):
         if self.game_last_drawn == True:
             return
-        screen = pygame.display.get_surface()
-        screen.fill((255,255,255))
-        current_time = pygame.time.get_ticks()
-        if (current_time - self.lastParticleAdded) > PARTICLE_RATE:
-            self.add_particle()
-            self.lastParticleAdded = current_time
-        self.sliderSprites.draw(screen)
-        self.positiveParticles.draw(screen)
-        self.negativeParticles.draw(screen)
-        self.layers.draw(screen)
+        self.surface.fill((255,255,255))
+        self.sliderSprites.draw(self.surface)
+        self.positiveParticles.draw(self.surface)
+        self.negativeParticles.draw(self.surface)
+        self.layers.draw(self.surface)
         if self.game_over == True:
             self.game_last_drawn = True
 
-    def add_particle(self):
-        # randomly add a particle
-        width, height = pygame.display.get_surface().get_size()
-        vy = random.randint(3, 8)
-        pos = (random.randint(0,width-100), -50)
-        positivity = random.randint(0, 1)
+    def add_particle(self, pos, vy, positivity):
         if positivity == 0:
-            self.positiveParticles.add( PositiveParticle(pos, (0, vy)) )
+            self.positiveParticles.add( PositiveParticle(self.surface, pos, (0, vy)) )
         else:
-            self.negativeParticles.add( NegativeParticle(pos, (0, vy)) )
+            self.negativeParticles.add( NegativeParticle(self.surface, pos, (0, vy)) )
