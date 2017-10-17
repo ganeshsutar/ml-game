@@ -34,7 +34,8 @@ class GeneticAlgo:
         self.do_mutation(nn)
 
 
-    def do_crossover(self,C1,C2):
+    def do_crossover(self,i,j):
+        C1,C2 = self.nns[i].coefs_,self.nns[j].coefs_
         genome1 = np.copy(C1)
         genome2 = np.copy(C2)
         i = random.randint(0, len(C1[0]))
@@ -54,7 +55,7 @@ class GeneticAlgo:
         # get indexes
         L  = self.sorted_idx
         i,j = L[-1][1],L[-2][1]
-        C1,C2 = self.do_crossover(self.nns[i].coefs_,self.nns[j].coefs_)
+        C1,C2 = self.do_crossover(i,j)
         ri,rj = L[0][1], L[1][1]
         ## set
         self.nns[ri].coefs_ = C1
@@ -71,21 +72,32 @@ class GeneticAlgo:
     def add_generation(self):
         # retain 25% of the best fit Genomes
         new_genration = []
-        L = self.sortedGeneration()
+        self.sortedGeneration()
+        L = self.sorted_idx
         # genomes to retain
         retain_counts = 5;
-        new_genration = [ self.nns[x]  for x  in L[-5:][1]]
+        new_genration = [ self.nns[x[1]]  for x  in L[-5:]]
 
-        ran = random.sample(xrange(0,15),3)
+        ran = random.sample(xrange(0,14),3)
         ran_genration = [self.nns[x] for x in  ran ]
-        new_genration.extend(ran)
+        new_genration.extend(ran_genration)
 
         # perform mutation
+        z = random.sample(xrange(0,8),3)
+        for x in z:
+            self.do_mutation(new_genration[x])
+
+
+        # perform crossover
         for x in range(6):
-            C1,
+            i ,j = random.sample(xrange(0,19),2)
+            C1,C2 = self.do_crossover(i,j)
+            nnn1 = make_nn()
+            nnn1.coefs_ = C1
+            nnn2 = make_nn()
+            nnn2.coefs_ = C2
+            new_genration.append(nnn1)
+            new_genration.append(nnn2)
 
-        # slect
-
-        self.crossover()
-        # if random.randint(0, 1) == 0:
-        self.mutate()
+        self.nns = new_genration
+        print(len(self.nns))
