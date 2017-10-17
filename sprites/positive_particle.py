@@ -25,4 +25,4 @@ class PositiveParticle(pygame.sprite.Sprite):
             self.kill()
 
     def get_inputs(self):
-        return (1, self.rect.center.x, self.rect.center.y, self.velocity[1])
+        return (1, self.rect.center[0], self.rect.center[1], self.velocity[1])

@@ -5,6 +5,17 @@ from sprites import Slider, PositiveParticle, NegativeParticle
 from layers import ScoreLayer
 
 PARTICLE_RATE = 500
+def make_comparator(slider_x):
+    def cmp(x,y):
+        # on the basis of y axis
+        t_x = (x[2],x[3],x[1]-slider_x)
+        t_y = (y[2],y[3],y[1]-slider_x)
+        if t_x > t_y:
+            return -1
+        elif t_x < t_y:
+            return 1
+        return 0
+    return cmp
 
 class GameScene:
     def __init__(self, (game_width, game_height)):
@@ -35,8 +46,10 @@ class GameScene:
         for x in collide_dict:
             self.score_layer.set_score(self.score_layer.score+10)
         collide_dict = pygame.sprite.groupcollide(self.sliderSprites,self.negativeParticles,False,False)
+        self.get_inputs(3)
         if len(collide_dict)>0:
             self.game_over = True
+
 
     def move_slider(self, label):
         self.slider.move(label)
@@ -60,5 +73,13 @@ class GameScene:
         else:
             self.negativeParticles.add( NegativeParticle(self.surface, pos, (0, vy)) )
 
-    def get_inputs(self):
-        pass
+
+
+    def get_inputs(self,n):
+        slider_x = self.slider.get_inputs()
+        neg_particles  = [(a,b,c,d,1) for a,b,c,d in [x.get_inputs() for x in self.negativeParticles]]
+        pos_particles  = [(a,b,c,d,1) for a,b,c,d in [x.get_inputs() for x in self.positiveParticles]]
+        neg_particles.sort(cmp=make_comparator(slider_x))
+        pos_particles.sort(cmp=make_comparator(slider_x))
+        print(neg_particles[0:n]+[(-1,0,0,0,0) for i in range(0,n-len(neg_particles))])
+        print(pos_particles[0:n]+[(+1,0,0,0,0) for i in range(0,n-len(pos_particles))])
