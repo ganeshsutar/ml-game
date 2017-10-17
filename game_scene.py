@@ -7,17 +7,20 @@ from layers import ScoreLayer
 PARTICLE_RATE = 500
 
 class GameScene:
-    def __init__(self, surface):
-        self.surface = surface
+    def __init__(self, (game_width, game_height)):
+        print(game_width, game_height)
+        self.surface = pygame.Surface((game_width, game_height), pygame.SRCALPHA, 32).convert_alpha()
         self.slider = Slider(self.surface)
         self.sliderSprites  = pygame.sprite.RenderPlain()
-        self.sliderSprites.add(self.slider)
-        self.game_over = False
-        self.game_last_drawn = False
         self.positiveParticles = pygame.sprite.RenderPlain()
         self.negativeParticles = pygame.sprite.RenderPlain()
-
         self.layers = pygame.sprite.RenderPlain()
+
+        self.sliderSprites.add(self.slider)
+
+        self.game_over = False
+        self.game_last_drawn = False
+
         self.score_layer = ScoreLayer(self.surface)
         self.layers.add(self.score_layer)
 
@@ -35,6 +38,9 @@ class GameScene:
         if len(collide_dict)>0:
             self.game_over = True
 
+    def move_slider(self, label):
+        self.slider.move(label)
+
     def draw(self, timeDelta):
         if self.game_last_drawn == True:
             return
@@ -47,6 +53,8 @@ class GameScene:
             self.game_last_drawn = True
 
     def add_particle(self, pos, vy, positivity):
+        if self.game_over:
+            return
         if positivity == 0:
             self.positiveParticles.add( PositiveParticle(self.surface, pos, (0, vy)) )
         else:

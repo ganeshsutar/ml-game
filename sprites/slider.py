@@ -22,12 +22,11 @@ class Slider(pygame.sprite.Sprite):
         self.pos = vec(width/2,height-HEIGHT-10)
         # self.velocity = velocity
 
-    def update(self):
+    def move(self, label):
         self.acc = vec(0,0)
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
+        if label == pygame.K_LEFT:
            self.acc.x = -BASKET_ACC
-        if keys[pygame.K_RIGHT]:
+        if label ==pygame.K_RIGHT:
            self.acc.x = BASKET_ACC
 
         self.acc += self.vel * (-BASKET_FRICTION)
