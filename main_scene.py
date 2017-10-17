@@ -1,5 +1,6 @@
 import pygame
 import random
+from sklearn.neural_network import MLPClassifier
 from game_scene import GameScene
 
 
@@ -19,16 +20,13 @@ class MainScene:
             game_scene = GameScene((self.game_scene_width, self.game_scene_height))
             self.scenes.append(game_scene)
 
+        self.init_nn()
+
     def update(self, timeDelta):
+        self.take_move()
         for scene in self.scenes:
             scene.update(timeDelta)
         self.add_particle()
-        idx = random.randint(0, self.no_of_games-1)
-        label = random.randint(0, 1)
-        if label == 0:
-            self.scenes[idx].move_slider(pygame.K_LEFT)
-        else:
-            self.scenes[idx].move_slider(pygame.K_RIGHT)
 
     def draw(self, timeDelta):
         screen = pygame.display.get_surface()
@@ -47,3 +45,22 @@ class MainScene:
         for scene in self.scenes:
             scene.add_particle(pos, vy, positivity)
         self.last_added = current_time
+
+    def init_nn(self):
+        self.clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5,2), random_state=1)
+        X = [[0 for x in range(32)] for i in range(3)]
+        y = [-1, 0, 1]
+        print(X, y)
+        self.clf.fit(X, y)
+
+    def take_move(self):
+        X = [scene.get_inputs(3) for scene in self.scenes]
+        print(X)
+        y = self.clf.predict(X)
+        for i in range(len(y)):
+            move = y[i]
+            scene = self.scenes[i]
+            if move == -1:
+                scene.move_slider(pygame.K_LEFT)
+            elif move == 1:
+                scene.move_slider(pygame.K_RIGHT)

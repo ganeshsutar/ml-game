@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 from sprites import Slider, PositiveParticle, NegativeParticle
 from layers import ScoreLayer
@@ -81,8 +82,8 @@ class GameScene:
         pos_particles  = [(a,b,c,d,1) for a,b,c,d in [x.get_inputs() for x in self.positiveParticles]]
         neg_particles.sort(cmp=make_comparator(slider_x))
         pos_particles.sort(cmp=make_comparator(slider_x))
-        neg_X = neg_particles[0:n]+[(-1,0,0,0,0) for i in range(0,n-len(neg_particles))]
-        pos_X = pos_particles[0:n]+[(-1,0,0,0,0) for i in range(0,n-len(pos_particles))]
+        neg_X = neg_particles[0:n]+[(-1,0,0,0,0) for i in range(0,max(0,n-len(neg_particles)))]
+        pos_X = pos_particles[0:n]+[(-1,0,0,0,0) for i in range(0,max(0,n-len(pos_particles)))]
         X = []
         for x in neg_X:
             X.extend(x)
@@ -90,4 +91,4 @@ class GameScene:
             X.extend(x)
         X.append(slider_x)
         X.append(slider_xvelocity)
-        print(X)
+        return X
