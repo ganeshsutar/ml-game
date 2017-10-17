@@ -41,3 +41,6 @@ class Slider(pygame.sprite.Sprite):
         if self.pos.y > screenSize[1]: self.pos.y = screenSize[1]
 
         self.rect.center = self.pos
+
+    def get_inputs(self):
+        return (self.rect.center.x)
