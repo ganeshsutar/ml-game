@@ -5,7 +5,7 @@ import math
 from sprites import Slider, PositiveParticle, NegativeParticle
 from layers import ScoreLayer
 
-PARTICLE_RATE = 500
+PARTICLE_RATE = 100
 def make_comparator(slider_x):
     def cmp(x,y):
         # on the basis of y axis

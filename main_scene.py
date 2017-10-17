@@ -8,12 +8,15 @@ from genetic_algo import GeneticAlgo
 PARTICLE_RATE = 1000
 
 class MainScene:
-    def __init__(self, no_of_games, screen_width, screen_height):
-        self.no_of_games = no_of_games
-        self.screen_width = screen_width
-        self.screen_height = screen_height
-        self.game_scene_height = screen_height
-        self.game_scene_width = screen_width / self.no_of_games
+    def __init__(self, nrows, ncols):
+        self.nrows = nrows
+        self.ncols = ncols
+        self.no_of_games = self.nrows * self.ncols
+        self.screen_width, self.screen_height = screen_height = pygame.display.get_surface().get_size()
+        self.game_screen_width = self.screen_width/ncols
+        self.game_screen_height = self.screen_height/nrows
+        self.game_scene_width = 400
+        self.game_scene_height = 300
         self.genetic_algo = GeneticAlgo(self.no_of_games, self)
         self.reinit()
 
@@ -37,11 +40,14 @@ class MainScene:
 
     def draw(self, timeDelta):
         screen = pygame.display.get_surface()
-        for i, scene in enumerate(self.scenes):
-            scene.draw(timeDelta)
-            pos = (i*self.game_scene_width, 0)
-            screen.blit(scene.surface, pos)
-            pygame.draw.rect(screen, (0,0,0), pygame.Rect(pos, (self.game_scene_width, self.game_scene_height)), 1)
+        for i in range(self.ncols):
+            for j in range(self.nrows):
+                scene = self.scenes[i + j * self.ncols]
+                scene.draw(timeDelta)
+                pos = (i*self.game_screen_width, j*self.game_screen_height)
+                nsurface = pygame.transform.scale(scene.surface, (self.game_screen_width, self.game_screen_height))
+                screen.blit(nsurface, pos)
+                pygame.draw.rect(screen, (0,0,0), pygame.Rect(pos, (self.game_screen_width, self.game_screen_height)), 1)
 
     def add_particle(self):
         current_time = pygame.time.get_ticks()

@@ -68,5 +68,5 @@ class GeneticAlgo:
 
     def add_generation(self):
         self.crossover()
-        if random.randint(0, 1) == 0:
-            self.mutate()
+        # if random.randint(0, 1) == 0:
+        self.mutate()
