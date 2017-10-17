@@ -23,6 +23,12 @@ class MainScene:
         for scene in self.scenes:
             scene.update(timeDelta)
         self.add_particle()
+        idx = random.randint(0, self.no_of_games-1)
+        label = random.randint(0, 1)
+        if label == 0:
+            self.scenes[idx].move_slider(pygame.K_LEFT)
+        else:
+            self.scenes[idx].move_slider(pygame.K_RIGHT)
 
     def draw(self, timeDelta):
         screen = pygame.display.get_surface()

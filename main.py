@@ -15,7 +15,7 @@ def main():
     clock = pygame.time.Clock()
     keepGoing  = True
     width, height = screen.get_size()
-    main_scene = MainScene(4, width, height)
+    main_scene = MainScene(3, width, height)
 
     while keepGoing:
         timeDelta = clock.tick(30)

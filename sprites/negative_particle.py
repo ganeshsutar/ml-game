@@ -11,7 +11,7 @@ class NegativeParticle(pygame.sprite.Sprite):
         self.surface = surface
         self.image = pygame.image.load(PATH).convert_alpha()
         self.rect = self.image.get_rect()
-        pygame.draw.rect(self.image,(255, 0, 0),(0, 0, self.rect.width-1,self.rect.height -1),1)
+        # pygame.draw.rect(self.image,(255, 0, 0),(0, 0, self.rect.width-1,self.rect.height -1),1)
         self.rect.center = position
         self.velocity = velocity
 

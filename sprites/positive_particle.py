@@ -12,7 +12,7 @@ class PositiveParticle(pygame.sprite.Sprite):
         rect = self.image.get_rect()
         self.image = pygame.transform.scale(self.image, (rect.width/2, rect.height/2))
         self.rect = self.image.get_rect()
-        pygame.draw.rect(self.image,(0, 255, 0),(0, 0, self.rect.width-1,self.rect.height -1),1)
+        # pygame.draw.rect(self.image,(0, 255, 0),(0, 0, self.rect.width-1,self.rect.height -1),1)
         self.rect.center = position
         self.velocity = velocity
 
