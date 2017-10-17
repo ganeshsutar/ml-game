@@ -3,15 +3,14 @@ import pygame
 WIDTH=10
 HEIGHT=10
 SCALE = 25
-PATH='./assets/stone.png'
+PATH='./assets/stone-small.png'
 
 class NegativeParticle(pygame.sprite.Sprite):
     def __init__(self, position, velocity):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(PATH).convert_alpha()
-        rect = self.image.get_rect()
-        self.image = pygame.transform.scale(self.image, (rect.width/SCALE, rect.height/SCALE))
         self.rect = self.image.get_rect()
+        pygame.draw.rect(self.image,(255, 0, 0),(0, 0, self.rect.width-1,self.rect.height -1),1)
         self.rect.center = position
         self.velocity = velocity
 

@@ -11,9 +11,8 @@ class Slider(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(PATH).convert_alpha()
-        #rect = self.image.get_rect()
-        #self.image = pygame.tra
-        #pygame.draw.rect(self.image,(0, 0, 255),(0, 0, WIDTH,HEIGHT))
+        rect = self.image.get_rect()
+        pygame.draw.rect(self.image,(0, 0, 255),(0, 0, rect.width-1,rect.height -1),1)
         self.rect = self.image.get_rect()
         self.vel = vec(0,0)
         self.acc = vec(0,0)
