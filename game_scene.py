@@ -59,3 +59,6 @@ class GameScene:
             self.positiveParticles.add( PositiveParticle(self.surface, pos, (0, vy)) )
         else:
             self.negativeParticles.add( NegativeParticle(self.surface, pos, (0, vy)) )
+
+    def get_inputs(self):
+        pass

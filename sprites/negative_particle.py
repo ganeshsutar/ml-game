@@ -21,3 +21,6 @@ class NegativeParticle(pygame.sprite.Sprite):
         width, height = self.surface.get_size()
         if not( -100 < self.rect.topleft[1] <= height + 10):
            self.kill()
+
+    def get_inputs(self):
+        return (-1, self.rect.center.x, self.rect.center.y, self.velocity[1])
