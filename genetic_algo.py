@@ -8,14 +8,31 @@ def make_nn():
     clf.fit(X, y)
     return clf
 
+
 class GeneticAlgo:
     def __init__(self, init_pop, main_scene):
         self.population = init_pop
         self.main_scene = main_scene
         self.nns = [make_nn() for i in range(self.population)]
 
+
+    def do_mutation(self, nn):
+        layer = random.randint(0, 1)
+        arr = nn.coefs_[layer]
+        idx = random.randint(0, len(arr)-1)
+        change = arr[idx] * 0.1
+        add_minus = random.randint(0,1)
+        if add_minus == 0:
+            arr[idx] += change
+        else:
+            arr[idx] -= change
+
+
     def mutate(self):
-        pass
+        i = random.randint(0, len(self.nns)-1)
+        nn = self.nns[i]
+        self.do_mutation(nn)
+
 
     def do_crossover(self,C1,C2):
         genome1 = np.copy(C1)
@@ -33,9 +50,6 @@ class GeneticAlgo:
         return genome1,genome2
 
 
-
-
-
     def crossover(self):
         L = [ (scene.get_score(),i)  for i,scene in enumerate(self.main_scene.scenes)]
         sorted(L)
@@ -48,11 +62,11 @@ class GeneticAlgo:
         self.nns[rj].coefs_ = C2
 
 
-
-
     def predict(self, i, x):
         return self.nns[i].predict([x])[0]
 
+
     def add_generation(self):
         self.crossover()
-        self.mutate()
+        if random.randint(0, 1) == 0:
+            self.mutate()
