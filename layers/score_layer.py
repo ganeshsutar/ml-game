@@ -8,7 +8,7 @@ class ScoreLayer(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.surface = surface
         self.score = 0
-        self.font = pygame.font.SysFont('Ubuntu Mono', 15)
+        self.font = pygame.font.SysFont('Ubuntu Mono', 20)
         self.update_score()
 
     def update_score(self):
