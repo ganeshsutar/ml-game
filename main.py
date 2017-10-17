@@ -7,7 +7,7 @@ from main_scene import MainScene
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((1300,600))
+    screen = pygame.display.set_mode((1024,768))
     pygame.display.set_caption('EGG CATCHER')
     pygame.font.init()
     pygame.mixer.init()
@@ -15,7 +15,7 @@ def main():
     clock = pygame.time.Clock()
     keepGoing  = True
     width, height = screen.get_size()
-    main_scene = MainScene(4, width, height)
+    main_scene = MainScene(4, 5)
 
     while keepGoing:
         timeDelta = clock.tick(30)
