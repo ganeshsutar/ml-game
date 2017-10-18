@@ -1,10 +1,19 @@
 from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler
 import numpy as np
 import random
+import pandas as pd
+
+base_X = pd.read_csv('./input-B.csv')
+base_y = pd.read_csv('./output-B.csv')
+scaler = StandardScaler()
+scaler.fit(base_X)
+base_X = scaler.transform(base_X)
+
 def make_nn():
     clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5), random_state=None)
-    X = [[0 for x in range(32)] for i in range(3)]
-    y = [-1, 0, 1]
+    X = base_X
+    y = base_y
     clf.fit(X, y)
     return clf
 
@@ -14,18 +23,19 @@ class GeneticAlgo:
         self.population = init_pop
         self.main_scene = main_scene
         self.nns = [make_nn() for i in range(self.population)]
+        self.generation = 0
 
 
     def do_mutation(self, nn):
-        layer = random.randint(0, 1)
-        arr = nn.coefs_[layer]
-        idx = random.randint(0, len(arr)-1)
-        change = arr[idx] * 0.1
-        add_minus = random.randint(0,1)
-        if add_minus == 0:
-            arr[idx] += change
-        else:
-            arr[idx] -= change
+        for layer in range(2):
+            arr = nn.coefs_[layer]
+            for idx in random.sample(range(0, len(arr)-1), 3):
+                change = arr[idx] * 0.1
+                add_minus = random.randint(0,1)
+                if add_minus == 0:
+                    arr[idx] += change
+                else:
+                    arr[idx] -= change
 
 
     def mutate(self):
@@ -66,16 +76,18 @@ class GeneticAlgo:
         self.sorted_idx = sorted(L)
 
     def predict(self, i, x):
-        return self.nns[i].predict([x])[0]
+        return self.nns[i].predict(scaler.transform([x]))[0]
 
 
     def add_generation(self):
         # retain 25% of the best fit Genomes
+        self.generation += 1
+        print('Generation {}'.format(self.generation))
         new_genration = []
         self.sortedGeneration()
         L = self.sorted_idx
         # genomes to retain
-        retain_counts = 5;
+        retain_counts = 5
         new_genration = [ self.nns[x[1]]  for x  in L[-5:]]
 
         ran = random.sample(xrange(0,14),3)
@@ -100,4 +112,3 @@ class GeneticAlgo:
             new_genration.append(nnn2)
 
         self.nns = new_genration
-        print(len(self.nns))
