@@ -4,6 +4,7 @@ import math
 
 from sprites import Slider, PositiveParticle, NegativeParticle
 from layers import ScoreLayer
+import assets_lib
 
 PARTICLE_RATE = 100
 def make_comparator(slider_x):
@@ -22,7 +23,7 @@ class GameScene:
     def __init__(self, (game_width, game_height)):
         # print(game_width, game_height)
         self.surface = pygame.Surface((game_width, game_height), pygame.SRCALPHA, 32).convert_alpha()
-        self.slider = Slider(self.surface)
+        self.slider = Slider(self.surface, assets_lib.basket)
         self.sliderSprites  = pygame.sprite.RenderPlain()
         self.positiveParticles = pygame.sprite.RenderPlain()
         self.negativeParticles = pygame.sprite.RenderPlain()
@@ -72,9 +73,9 @@ class GameScene:
         if self.game_over:
             return
         if positivity == 0:
-            self.positiveParticles.add( PositiveParticle(self.surface, pos, (0, vy)) )
+            self.positiveParticles.add( PositiveParticle(self.surface, pos, (0, vy), assets_lib.egg) )
         else:
-            self.negativeParticles.add( NegativeParticle(self.surface, pos, (0, vy)) )
+            self.negativeParticles.add( NegativeParticle(self.surface, pos, (0, vy), assets_lib.stone) )
 
     def get_inputs(self,n):
         """Parameter n is for top n +ve and -ve particles to select for NN"""

@@ -4,6 +4,7 @@ import pygame
 import os
 import random
 import pandas as pd
+import assets_lib
 from main_scene import MainScene
 from capture_input import CaptureInputScene
 
@@ -23,6 +24,7 @@ def main():
     pygame.font.init()
     pygame.mixer.init()
 
+    assets_lib.init()
     clock = pygame.time.Clock()
     keepGoing  = True
     width, height = screen.get_size()

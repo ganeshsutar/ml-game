@@ -18,14 +18,28 @@ class MainScene:
         self.game_scene_width = 400
         self.game_scene_height = 300
         self.genetic_algo = GeneticAlgo(self.no_of_games, self)
-        self.reinit()
+        self.init()
 
-    def reinit(self):
+
+    def init(self):
         self.last_added = pygame.time.get_ticks()
         self.scenes = []
         for i in range(self.no_of_games):
             game_scene = GameScene((self.game_scene_width, self.game_scene_height))
             self.scenes.append(game_scene)
+
+
+    def reinit(self):
+        old_scenes = self.scenes
+        self.last_added = pygame.time.get_ticks()
+        self.scenes = []
+        for i in range(self.no_of_games):
+            game_scene = GameScene((self.game_scene_width, self.game_scene_height))
+            game_scene.score_layer.generation = old_scenes[i].score_layer.generation
+            game_scene.score_layer.mutated = old_scenes[i].score_layer.mutated
+            game_scene.score_layer.update_image()
+            self.scenes.append(game_scene)
+
 
     def update(self, timeDelta):
         self.take_move()
@@ -38,6 +52,7 @@ class MainScene:
             self.genetic_algo.add_generation()
             self.reinit()
 
+
     def draw(self, timeDelta):
         screen = pygame.display.get_surface()
         for i in range(self.ncols):
@@ -48,6 +63,7 @@ class MainScene:
                 nsurface = pygame.transform.scale(scene.surface, (self.game_screen_width, self.game_screen_height))
                 screen.blit(nsurface, pos)
                 pygame.draw.rect(screen, (0,0,0), pygame.Rect(pos, (self.game_screen_width, self.game_screen_height)), 1)
+
 
     def add_particle(self):
         current_time = pygame.time.get_ticks()
@@ -60,11 +76,13 @@ class MainScene:
             scene.add_particle(pos, vy, positivity)
         self.last_added = current_time
 
+
     def init_nn(self):
         self.clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5,2), random_state=1)
         X = [[0 for x in range(32)] for i in range(3)]
         y = [-1, 0, 1]
         self.clf.fit(X, y)
+
 
     def take_move(self):
         for i, scene in enumerate(self.scenes):
