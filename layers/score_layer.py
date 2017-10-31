@@ -4,13 +4,13 @@ WIDTH=100
 HEIGHT=100
 
 class ScoreLayer(pygame.sprite.Sprite):
-    def __init__(self, surface):
+    def __init__(self, surface, font):
         pygame.sprite.Sprite.__init__(self)
         self.surface = surface
         self.score = 0
         self.generation = 0
         self.mutated = 0
-        self.font = pygame.font.SysFont('Ubuntu Mono', 20)
+        self.font = font
         self.update_image()
 
     def update_image(self):

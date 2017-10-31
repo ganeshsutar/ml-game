@@ -34,7 +34,7 @@ class GameScene:
         self.game_over = False
         self.game_last_drawn = False
 
-        self.score_layer = ScoreLayer(self.surface)
+        self.score_layer = ScoreLayer(self.surface, assets_lib.score_font)
         self.layers.add(self.score_layer)
 
     def get_score(self):

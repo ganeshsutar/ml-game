@@ -3,9 +3,10 @@ import pygame
 basket = None
 egg = None
 stone = None
+score_font = None
 
 def init():
-    global basket, egg, stone
+    global basket, egg, stone, score_font
     basket = pygame.image.load('./assets/basket.png').convert_alpha()
     rect = basket.get_rect()
     basket = pygame.transform.scale(basket, (rect.width/2, rect.height/2))
@@ -15,3 +16,4 @@ def init():
     stone = pygame.image.load('./assets/stone-small.png').convert_alpha()
     rect = stone.get_rect()
     stone = pygame.transform.scale(stone, (rect.width/2, rect.height/2))
+    score_font = pygame.font.SysFont('Ubuntu Mono', 20)
